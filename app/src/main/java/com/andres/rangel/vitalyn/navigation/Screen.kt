@@ -8,6 +8,7 @@ sealed class Screen(val route: String) {
     data object ForgotPassword: Screen("forgot_password_screen")
 
     // Main App Screens
+    data object BottomBar: Screen("bottom_bar")
     data object Sports: Screen("sports_screen")
     data object Nutrition: Screen("nutrition_screen")
     data object Rest: Screen("rest_screen")

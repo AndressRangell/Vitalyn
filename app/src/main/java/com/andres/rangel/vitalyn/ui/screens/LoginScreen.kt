@@ -8,13 +8,13 @@ import androidx.navigation.NavHostController
 import com.andres.rangel.vitalyn.navigation.Screen
 
 @Composable
-fun SportsScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController) {
     Column {
-        Text(text = "Sports Screen")
+        Text(text = "Login Screen")
         Button(
-            onClick = { navController.navigate(Screen.Nutrition.route) }
+            onClick = { navController.navigate(Screen.Sports.route) }
         ) {
-            Text(text = "Go to Nutrition Screen")
+            Text(text = "Go to Sports Screen")
         }
     }
 }
