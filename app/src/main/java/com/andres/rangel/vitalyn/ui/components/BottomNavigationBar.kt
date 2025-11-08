@@ -19,10 +19,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.andres.rangel.vitalyn.R
 import com.andres.rangel.vitalyn.navigation.NavigationItem
 import com.andres.rangel.vitalyn.navigation.Screen
 
@@ -73,7 +76,7 @@ fun BottomNavigationBar(
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Icon(
-                                imageVector = item.icon,
+                                painter = painterResource(item.icon),
                                 contentDescription = item.title,
                                 modifier = Modifier.size(28.dp),
                                 tint = if (selected)
@@ -92,27 +95,27 @@ fun BottomNavigationBar(
 val navigationItems = listOf(
     NavigationItem(
         title = "Sports",
-        icon = Icons.Default.Home,
+        icon = R.drawable.pesa,
         route = Screen.Sports.route
     ),
     NavigationItem(
         title = "Nutrition",
-        icon = Icons.Default.Home,
+        icon = R.drawable.bienestar,
         route = Screen.Nutrition.route
     ),
     NavigationItem(
         title = "Rest",
-        icon = Icons.Default.Home,
+        icon = R.drawable.descanso,
         route = Screen.Rest.route
     ),
     NavigationItem(
         title = "Hydration",
-        icon = Icons.Default.Home,
+        icon = R.drawable.agua,
         route = Screen.Hydration.route
     ),
     NavigationItem(
         title = "Setting",
-        icon = Icons.Default.Home,
+        icon = R.drawable.ajustar,
         route = Screen.Settings.route
     )
 )
