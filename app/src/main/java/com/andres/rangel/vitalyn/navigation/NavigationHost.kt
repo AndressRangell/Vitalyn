@@ -1,5 +1,6 @@
 package com.andres.rangel.vitalyn.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -42,7 +43,8 @@ fun NavigationHost() {
         NavHost(
             navController = navController,
             startDestination = Screen.Login.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.fillMaxSize()
+                .padding(top = innerPadding.calculateTopPadding())
         ) {
             composable(route = Screen.Login.route) {
                 LoginScreen(navController)
