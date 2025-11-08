@@ -1,5 +1,7 @@
 package com.andres.rangel.vitalyn.ui.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,16 +12,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun BottomNavigationBar(
             shape = RoundedCornerShape(cornerRadius),
             tonalElevation = 8.dp,
             shadowElevation = 8.dp,
-            color = MaterialTheme.colorScheme.surface,
+            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp)
@@ -63,31 +64,45 @@ fun BottomNavigationBar(
                 navigationItems.forEach { item ->
                     val selected = currentDestination?.route == item.route
 
-                    IconButton(
-                        onClick = {
-                            if (!selected) {
-                                navController.navigate(item.route) {
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                        },
-                        modifier = Modifier.size(64.dp)
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(
-                                painter = painterResource(item.icon),
-                                contentDescription = item.title,
-                                modifier = Modifier.size(28.dp),
-                                tint = if (selected)
-                                    MaterialTheme.colorScheme.primary
-                                else
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                    BottomNavigationItem(item = item, selected = selected) {
+                        if (!selected) navController.navigate(item.route) {
+                            launchSingleTop = true
+                            restoreState = false
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationItem(item: NavigationItem, selected: Boolean, onClick: () -> Unit) {
+    val scale by animateFloatAsState(
+        targetValue = if (selected) 1.20f else 1f,
+        animationSpec = spring(
+            dampingRatio = 0.5f,
+            stiffness = 300f
+        ),
+        label = "iconScaleAnim"
+    )
+
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier.size(64.dp)
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                painter = painterResource(item.icon),
+                contentDescription = item.title,
+                modifier = Modifier
+                    .size(28.dp)
+                    .graphicsLayer(scaleX = scale, scaleY = scale),
+                tint = if (selected)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
