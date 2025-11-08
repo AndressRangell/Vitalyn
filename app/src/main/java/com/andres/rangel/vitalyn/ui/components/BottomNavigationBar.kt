@@ -110,27 +110,27 @@ fun BottomNavigationItem(item: NavigationItem, selected: Boolean, onClick: () ->
 val navigationItems = listOf(
     NavigationItem(
         title = "Sports",
-        icon = R.drawable.pesa,
+        icon = R.drawable.gym,
         route = Screen.Sports.route
     ),
     NavigationItem(
         title = "Nutrition",
-        icon = R.drawable.bienestar,
+        icon = R.drawable.nutrition,
         route = Screen.Nutrition.route
     ),
     NavigationItem(
         title = "Rest",
-        icon = R.drawable.descanso,
+        icon = R.drawable.rest,
         route = Screen.Rest.route
     ),
     NavigationItem(
         title = "Hydration",
-        icon = R.drawable.agua,
+        icon = R.drawable.watter,
         route = Screen.Hydration.route
     ),
     NavigationItem(
         title = "Setting",
-        icon = R.drawable.ajustar,
+        icon = R.drawable.settings,
         route = Screen.Settings.route
     )
 )
