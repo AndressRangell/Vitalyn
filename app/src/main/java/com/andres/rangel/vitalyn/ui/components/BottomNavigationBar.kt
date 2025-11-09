@@ -11,7 +11,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,9 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,7 +40,6 @@ import com.andres.rangel.vitalyn.navigation.Screen
 import com.andres.rangel.vitalyn.ui.theme.GrayDark
 import com.andres.rangel.vitalyn.ui.theme.GrayLight
 import com.andres.rangel.vitalyn.ui.theme.GreenPastel
-import com.andres.rangel.vitalyn.ui.theme.RedDark
 
 @Composable
 fun BottomNavigationBar(
