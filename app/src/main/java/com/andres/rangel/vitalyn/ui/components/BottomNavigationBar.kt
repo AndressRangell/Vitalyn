@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,9 +38,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.andres.rangel.vitalyn.R
 import com.andres.rangel.vitalyn.navigation.NavigationItem
 import com.andres.rangel.vitalyn.navigation.Screen
-import com.andres.rangel.vitalyn.ui.theme.GrayDark
 import com.andres.rangel.vitalyn.ui.theme.GrayLight
 import com.andres.rangel.vitalyn.ui.theme.GreenPastel
+import com.andres.rangel.vitalyn.utils.NavigationConstants
 
 @Composable
 fun BottomNavigationBar(
@@ -60,7 +61,7 @@ fun BottomNavigationBar(
             shape = RoundedCornerShape(cornerRadius),
             tonalElevation = 8.dp,
             shadowElevation = 8.dp,
-            color = GrayDark,
+            color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp)
@@ -92,7 +93,7 @@ fun BottomNavigationItem(item: NavigationItem, selected: Boolean, onClick: () ->
     val backgroundColor by animateColorAsState(
         targetValue = if (selected) GreenPastel.copy(alpha = 0.1f) else Color.Transparent,
         animationSpec = tween(150, easing = LinearOutSlowInEasing),
-        label = "background animation"
+        label = NavigationConstants.BACKGROUND_ANIMATION
     )
 
     val scale by animateFloatAsState(
@@ -101,7 +102,7 @@ fun BottomNavigationItem(item: NavigationItem, selected: Boolean, onClick: () ->
             dampingRatio = Spring.DampingRatioNoBouncy,
             stiffness = Spring.StiffnessHigh
         ),
-        label = "scaleAnim"
+        label = NavigationConstants.SCALE_ANIMATION
     )
 
     Box(
@@ -124,7 +125,7 @@ fun BottomNavigationItem(item: NavigationItem, selected: Boolean, onClick: () ->
                 painter = painterResource(item.icon),
                 contentDescription = item.title,
                 modifier = Modifier
-                    .size(if (item.title == "Sports") 30.dp else 26.dp)
+                    .size(if (item.title == NavigationConstants.SPORTS) 30.dp else 26.dp)
                     .graphicsLayer(scaleX = scale, scaleY = scale),
                 tint = if (selected) GreenPastel else GrayLight
             )
@@ -134,27 +135,27 @@ fun BottomNavigationItem(item: NavigationItem, selected: Boolean, onClick: () ->
 
 val navigationItems = listOf(
     NavigationItem(
-        title = "Sports",
+        title = NavigationConstants.SPORTS,
         icon = R.drawable.gym,
         route = Screen.Sports.route
     ),
     NavigationItem(
-        title = "Nutrition",
+        title = NavigationConstants.NUTRITION,
         icon = R.drawable.nutrition,
         route = Screen.Nutrition.route
     ),
     NavigationItem(
-        title = "Rest",
+        title = NavigationConstants.REST,
         icon = R.drawable.rest,
         route = Screen.Rest.route
     ),
     NavigationItem(
-        title = "Hydration",
+        title = NavigationConstants.HYDRATION,
         icon = R.drawable.watter,
         route = Screen.Hydration.route
     ),
     NavigationItem(
-        title = "Setting",
+        title = NavigationConstants.SETTINGS,
         icon = R.drawable.settings,
         route = Screen.Settings.route
     )

@@ -42,7 +42,7 @@ fun NavigationHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Login.route,
+            startDestination = Screen.Sports.route,
             modifier = Modifier.fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding())
         ) {
