@@ -16,7 +16,7 @@
             android:name=".VitalynApp"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Vitalyn">
+            android:theme="@style/Theme.Vitalyn.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

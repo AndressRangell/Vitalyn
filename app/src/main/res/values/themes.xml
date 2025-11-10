@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.Vitalyn" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Vitalyn.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#0A0A0A</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+
+        <!-- Tema de Compose que tomará después del Splash -->
+        <item name="postSplashScreenTheme">@style/Theme.Vitalyn</item>
+    </style>
 </resources>

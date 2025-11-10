@@ -59,6 +59,9 @@ dependencies {
     implementation(libs.androidx.navigation.dynamic.features)
     androidTestImplementation(libs.androidx.navigation.testing)
 
+    // Splash Screen
+    implementation(libs.androidx.splash.screen)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
