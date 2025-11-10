@@ -11,26 +11,27 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     /*** Used by default by Material Design ***/
-    background = GreenDark,
-    onBackground = GreenPastel,
+    background = BlackBackground,
+    onBackground = GrayLight,
 
-    onSurface = GrayLight,
+    onSurface = GreenPastel,
 
     primary = GrayLight,
     primaryContainer = GreenPastel,
-    onPrimary = Black,
+    onPrimary = BlackBackground,
 
+    secondary = GrayDark,
     onSecondary = White,
 
     surfaceVariant = Gray,
-    onSurfaceVariant = White,
+    onSurfaceVariant = GrayLight,
 
     outline = GrayLight,
 
     /*** Properties for customizing components ***/
     error = RedLight,
     onError = RedDark,
-    errorContainer = GreenDark,
+    errorContainer = BlackBackground,
     onErrorContainer = Red
 )
 
