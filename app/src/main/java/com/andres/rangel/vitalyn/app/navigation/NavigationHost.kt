@@ -11,8 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.andres.rangel.vitalyn.app.ui.components.BottomNavigationBar
+import com.andres.rangel.vitalyn.feature.authentication.ui.view.LoginScreen
 import com.andres.rangel.vitalyn.hydration.ui.view.HydrationScreen
-import com.andres.rangel.vitalyn.authentication.ui.view.LoginScreen
 import com.andres.rangel.vitalyn.nutrition.ui.view.NutritionScreen
 import com.andres.rangel.vitalyn.rest.ui.view.RestScreen
 import com.andres.rangel.vitalyn.setting.ui.view.SettingsScreen
@@ -42,12 +42,13 @@ fun NavigationHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Sports.route,
-            modifier = Modifier.fillMaxSize()
+            startDestination = Screen.Login.route,
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding())
         ) {
             composable(route = Screen.Login.route) {
-                LoginScreen(navController)
+                LoginScreen(navigateToSports = { navController.navigate(Screen.Sports.route) })
             }
             composable(route = Screen.Sports.route) {
                 SportsScreen(navController)

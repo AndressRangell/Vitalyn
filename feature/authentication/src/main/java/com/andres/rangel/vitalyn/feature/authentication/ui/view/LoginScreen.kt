@@ -1,18 +1,16 @@
-package com.andres.rangel.vitalyn.authentication.ui.view
+package com.andres.rangel.vitalyn.feature.authentication.ui.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
-import com.andres.rangel.vitalyn.app.navigation.Screen
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navigateToSports: () -> Unit) {
     Column {
         Text(text = "Login Screen")
         Button(
-            onClick = { navController.navigate(Screen.Sports.route) }
+            onClick = { navigateToSports() }
         ) {
             Text(text = "Go to Sports Screen")
         }
