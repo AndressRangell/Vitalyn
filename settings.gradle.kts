@@ -23,3 +23,4 @@ rootProject.name = "Vitalyn"
 include(":app")
 include(":core")
 include(":authentication")
+include(":hydration")

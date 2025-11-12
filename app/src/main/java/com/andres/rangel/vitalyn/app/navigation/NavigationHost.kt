@@ -60,7 +60,7 @@ fun NavigationHost() {
                 RestScreen(navController)
             }
             composable(route = Screen.Hydration.route) {
-                HydrationScreen(navController)
+                HydrationScreen()
             }
             composable(route = Screen.Settings.route) {
                 SettingsScreen(navController)

@@ -43,6 +43,7 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":authentication"))
+    implementation(project(":hydration"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
