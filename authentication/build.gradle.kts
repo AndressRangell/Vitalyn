@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.andres.rangel.vitalyn.feature.authentication"
+    namespace = "com.andres.rangel.vitalyn.authentication"
     compileSdk = 36
 
     defaultConfig {

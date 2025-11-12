@@ -1,4 +1,4 @@
-package com.andres.rangel.vitalyn.feature.authentication.ui.view
+package com.andres.rangel.vitalyn.authentication.ui.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button

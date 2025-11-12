@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.andres.rangel.vitalyn.app.ui.components.BottomNavigationBar
-import com.andres.rangel.vitalyn.feature.authentication.ui.view.LoginScreen
+import com.andres.rangel.vitalyn.authentication.ui.view.LoginScreen
 import com.andres.rangel.vitalyn.hydration.ui.view.HydrationScreen
 import com.andres.rangel.vitalyn.nutrition.ui.view.NutritionScreen
 import com.andres.rangel.vitalyn.rest.ui.view.RestScreen

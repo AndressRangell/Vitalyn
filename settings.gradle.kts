@@ -22,4 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Vitalyn"
 include(":app")
 include(":core")
-include(":feature:authentication")
+include(":authentication")

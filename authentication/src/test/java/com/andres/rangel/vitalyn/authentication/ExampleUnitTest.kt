@@ -1,4 +1,4 @@
-package com.andres.rangel.vitalyn.feature.authentication
+package com.andres.rangel.vitalyn.authentication
 
 import org.junit.Test
 
