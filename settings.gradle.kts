@@ -21,4 +21,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "Vitalyn"
 include(":app")
- 
+include(":core")
+include(":authentication")
+include(":hydration")
+include(":nutrition")
+include(":rest")
+include(":setting")
+include(":sport")
