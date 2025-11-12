@@ -17,8 +17,10 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = GreenPastel,
 
     primary = GrayLight,
-    primaryContainer = GreenPastel,
     onPrimary = BlackBackground,
+
+    primaryContainer = GreenPastel,
+    onPrimaryContainer = Black,
 
     secondary = GrayDark,
     onSecondary = White,
