@@ -54,7 +54,7 @@ fun NavigationHost() {
                 SportsScreen(navController)
             }
             composable(route = Screen.Nutrition.route) {
-                NutritionScreen(navController)
+                NutritionScreen()
             }
             composable(route = Screen.Rest.route) {
                 RestScreen(navController)
