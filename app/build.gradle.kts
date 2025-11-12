@@ -45,6 +45,9 @@ dependencies {
     implementation(project(":authentication"))
     implementation(project(":hydration"))
     implementation(project(":nutrition"))
+    implementation(project(":rest"))
+    implementation(project(":setting"))
+    implementation(project(":sport"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -51,19 +51,19 @@ fun NavigationHost() {
                 LoginScreen(navigateToSports = { navController.navigate(Screen.Sports.route) })
             }
             composable(route = Screen.Sports.route) {
-                SportsScreen(navController)
+                SportsScreen()
             }
             composable(route = Screen.Nutrition.route) {
                 NutritionScreen()
             }
             composable(route = Screen.Rest.route) {
-                RestScreen(navController)
+                RestScreen()
             }
             composable(route = Screen.Hydration.route) {
                 HydrationScreen()
             }
             composable(route = Screen.Settings.route) {
-                SettingsScreen(navController)
+                SettingsScreen()
             }
         }
     }
