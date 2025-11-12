@@ -42,9 +42,7 @@ fun NavigationHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Sports.route,
-            modifier = Modifier.fillMaxSize()
-                .padding(top = innerPadding.calculateTopPadding())
+            startDestination = Screen.Sports.route
         ) {
             composable(route = Screen.Login.route) {
                 LoginScreen(navController)

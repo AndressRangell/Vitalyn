@@ -32,7 +32,9 @@ private val DarkColorScheme = darkColorScheme(
     error = RedLight,
     onError = RedDark,
     errorContainer = BlackBackground,
-    onErrorContainer = Red
+    onErrorContainer = Red,
+
+    tertiary = RedVibrant
 )
 
 @Composable
