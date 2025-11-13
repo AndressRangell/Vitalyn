@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Vitalyn</string>
+    <string name="bottom_navigation_item_background_animation_label">Background Animation</string>
+    <string name="bottom_navigation_item_scale_animation_label">Scale Animation</string>
 </resources>

@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -93,7 +94,7 @@ fun BottomNavigationItem(item: NavigationItem, selected: Boolean, onClick: () ->
     val backgroundColor by animateColorAsState(
         targetValue = if (selected) GreenPastel.copy(alpha = 0.1f) else Color.Transparent,
         animationSpec = tween(150, easing = LinearOutSlowInEasing),
-        label = AppConstants.BACKGROUND_ANIMATION
+        label = stringResource(R.string.bottom_navigation_item_background_animation_label)
     )
 
     val scale by animateFloatAsState(
@@ -102,7 +103,7 @@ fun BottomNavigationItem(item: NavigationItem, selected: Boolean, onClick: () ->
             dampingRatio = Spring.DampingRatioNoBouncy,
             stiffness = Spring.StiffnessHigh
         ),
-        label = AppConstants.SCALE_ANIMATION
+        label = stringResource(R.string.bottom_navigation_item_scale_animation_label)
     )
 
     Box(
