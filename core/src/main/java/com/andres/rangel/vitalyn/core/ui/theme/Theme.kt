@@ -22,6 +22,7 @@ private val DarkColorScheme = darkColorScheme(
 
     secondary = GrayDark,
     onSecondary = White,
+    secondaryContainer = GreenCard,
 
     surfaceVariant = Gray,
     onSurfaceVariant = GrayLight,

@@ -2,6 +2,9 @@
 <resources>
     <string name="top_app_bar_sports_title">Tu Actividad</string>
     <string name="top_app_bar_sports_error_streak">--</string>
+    <string name="routine_list_status_routine">En progreso</string>
+    <string name="routine_list_status_completed">Completada</string>
+    <string name="routine_list_image_description">Cycling Image</string>
 
     <string-array name="week_days_short">
         <item>L</item>
