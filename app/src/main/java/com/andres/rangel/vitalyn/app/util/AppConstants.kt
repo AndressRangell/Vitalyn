@@ -1,6 +1,6 @@
 package com.andres.rangel.vitalyn.app.util
 
-object NavigationConstants {
+object AppConstants {
     const val SPORTS = "Sports"
     const val NUTRITION = "Nutrition"
     const val REST = "Rest"

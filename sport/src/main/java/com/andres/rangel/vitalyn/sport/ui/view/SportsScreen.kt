@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,53 +30,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.andres.rangel.vitalyn.core.util.DataState
 import com.andres.rangel.vitalyn.sport.R
+import com.andres.rangel.vitalyn.sport.ui.viewmodel.SportsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SportsScreen() {
+fun SportsScreen(
+    viewModel: SportsViewModel = hiltViewModel()
+) {
+    val streak by viewModel.streak.collectAsState()
+
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Tu Actividad",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                },
-                actions = {
-                    IconButton(
-                        onClick = {},
-                        modifier = Modifier.width(70.dp)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.End,
-                            modifier = Modifier.width(50.dp)
-                        ) {
-                            Text(
-                                text = "12",
-                                style = MaterialTheme.typography.titleSmall,
-                                textAlign = TextAlign.End,
-                                modifier = Modifier.padding(vertical = 5.dp)
-                            )
-                            Icon(
-                                painterResource(R.drawable.streak),
-                                contentDescription = "Streak icon",
-                                tint = MaterialTheme.colorScheme.tertiary,
-                                modifier = Modifier
-                                    .size(25.dp)
-                            )
-                        }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                ),
-                modifier = Modifier.padding(horizontal = 10.dp)
-            )
+            TopAppBarSports(streak)
         },
         modifier = Modifier
             .fillMaxSize()
@@ -133,6 +104,64 @@ fun SportsScreen() {
             }
         }
     }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun TopAppBarSports(streak: DataState<Int>) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "Tu Actividad",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        },
+        actions = {
+            IconButton(
+                onClick = {},
+                modifier = Modifier.width(70.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.width(50.dp)
+                ) {
+                    when (streak) {
+                        is DataState.Success -> Text(
+                            text = streak.data.toString(),
+                            style = MaterialTheme.typography.titleSmall,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.padding(vertical = 5.dp)
+                        )
+                        is DataState.Loading -> CircularProgressIndicator(
+                            strokeWidth = 2.dp,
+                            modifier = Modifier
+                                .size(16.dp)
+                                .padding(end = 5.dp)
+                        )
+                        is DataState.Error -> Text(
+                            text = "--",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                    Icon(
+                        painterResource(R.drawable.streak),
+                        contentDescription = "Streak icon",
+                        tint = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier
+                            .size(25.dp)
+                    )
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        modifier = Modifier.padding(horizontal = 10.dp)
+    )
 }
 
 val days = listOf(
