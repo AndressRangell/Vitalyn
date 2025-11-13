@@ -43,7 +43,6 @@ fun SportsScreen(
     viewModel: SportsViewModel = hiltViewModel()
 ) {
     val streak by viewModel.streak.collectAsState()
-    val weekDaysShort = stringArrayResource(R.array.week_days_short)
 
     Scaffold(
         topBar = {
@@ -56,68 +55,7 @@ fun SportsScreen(
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            Text(
-                "Noviembre 2025",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(horizontal = 25.dp)
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 30.dp,
-                        end = 30.dp,
-                        top = 10.dp
-                    )
-            ) {
-                weekDaysShort.forEach { day ->
-                    Text(
-                        text = day,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-            }
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 20.dp,
-                        vertical = 5.dp
-                    )
-            ) {
-                for (day in 0..6) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.height(60.dp)
-                    ) {
-                        Text(
-                            text = numberDays[day],
-                            style = MaterialTheme.typography.titleMedium,
-                            color = if (numberDays[day] == "10")
-                                MaterialTheme.colorScheme.background
-                            else
-                                MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .size(32.dp)
-                                .background(
-                                    color = if (numberDays[day] == "10")
-                                        MaterialTheme.colorScheme.primaryContainer
-                                    else
-                                        MaterialTheme.colorScheme.background,
-                                    shape = CircleShape
-                                )
-                                .padding(
-                                    top = 3.dp,
-                                    start = 7.dp
-                                )
-                        )
-                    }
-                }
-            }
+            TrainingCalendarHeader()
         }
     }
 }
@@ -178,6 +116,73 @@ private fun TopAppBarSports(streak: DataState<Int>) {
         ),
         modifier = Modifier.padding(horizontal = 10.dp)
     )
+}
+
+@Composable
+fun TrainingCalendarHeader() {
+    val weekDaysShort = stringArrayResource(R.array.week_days_short)
+    Text(
+        "Noviembre 2025",
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.padding(horizontal = 25.dp)
+    )
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = 30.dp,
+                end = 30.dp,
+                top = 10.dp
+            )
+    ) {
+        weekDaysShort.forEach { day ->
+            Text(
+                text = day,
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+    }
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 20.dp,
+                vertical = 5.dp
+            )
+    ) {
+        for (day in 0..6) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.height(60.dp)
+            ) {
+                Text(
+                    text = numberDays[day],
+                    style = MaterialTheme.typography.titleMedium,
+                    color = if (numberDays[day] == "10")
+                        MaterialTheme.colorScheme.background
+                    else
+                        MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(
+                            color = if (numberDays[day] == "10")
+                                MaterialTheme.colorScheme.primaryContainer
+                            else
+                                MaterialTheme.colorScheme.background,
+                            shape = CircleShape
+                        )
+                        .padding(
+                            top = 3.dp,
+                            start = 7.dp
+                        )
+                )
+            }
+        }
+    }
 }
 
 val numberDays = listOf(
