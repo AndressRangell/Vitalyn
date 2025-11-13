@@ -13,18 +13,23 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -35,16 +40,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.andres.rangel.vitalyn.authentication.ui.state.LoginUiState
+import com.andres.rangel.vitalyn.authentication.R
+import com.andres.rangel.vitalyn.authentication.ui.state.LoginEvent
 import com.andres.rangel.vitalyn.authentication.ui.viewmodel.LoginViewModel
 import com.andres.rangel.vitalyn.core.ui.theme.VitalynTheme
 
@@ -55,16 +67,19 @@ fun LoginScreen(
 ) {
 
     LaunchedEffect(Unit) {
-        loginViewModel.loginUiState.collect {
-            if (it is LoginUiState.Success) {
-                navigateToSports()
+        loginViewModel.loginEvent.collect { event ->
+            when (event) {
+                is LoginEvent.LoggedInSuccessfully -> {
+                    navigateToSports()
+                }
             }
         }
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .imePadding()
+            .verticalScroll(rememberScrollState())
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -109,7 +124,9 @@ private fun LoginForm(
 ) {
     val loginFormState by loginViewModel.loginFormState.collectAsState()
 
-    val hasError = loginFormState.email.isBlank() || loginFormState.password.isBlank()
+    val isFormValid = !loginFormState.isLoading &&
+            loginFormState.email.isNotBlank() &&
+            loginFormState.password.isNotBlank()
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -125,7 +142,8 @@ private fun LoginForm(
                 label = "Correo Electrónico",
                 isPassword = false,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
                 )
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -136,10 +154,16 @@ private fun LoginForm(
                 isPassword = true
             )
             Spacer(modifier = Modifier.height(20.dp))
+            if (loginFormState.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
             LoginButton(
                 onClick = onLoginClick,
                 text = "Iniciar Sesión",
-                enabled = !hasError
+                enabled = isFormValid
             )
             Spacer(modifier = Modifier.height(10.dp))
             ErrorMessage(loginFormState.errorMessage)
@@ -161,6 +185,8 @@ private fun LoginTextField(
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
+    var passwordVisible by remember { mutableStateOf(false) }
+
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -169,11 +195,30 @@ private fun LoginTextField(
         keyboardOptions = keyboardOptions,
         singleLine = true,
         shape = MaterialTheme.shapes.medium,
-        visualTransformation = if (isPassword) {
+        visualTransformation = if (isPassword && !passwordVisible) {
             PasswordVisualTransformation()
         } else {
             VisualTransformation.None
-        }
+        },
+        trailingIcon = if (isPassword) {
+            {
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        modifier = Modifier.size(20.dp),
+                        painter = if (passwordVisible) {
+                            painterResource(id = R.drawable.ic_visibility_off)
+                        } else {
+                            painterResource(id = R.drawable.ic_visibility)
+                        },
+                        contentDescription = if (passwordVisible) {
+                            "Ocultar contraseña"
+                        } else {
+                            "Mostrar contraseña"
+                        }
+                    )
+                }
+            }
+        } else null
     )
 }
 
@@ -188,8 +233,13 @@ private fun LoginButton(
     ),
     enabled: Boolean = true
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Button(
-        onClick = onClick,
+        onClick = {
+            keyboardController?.hide()
+            onClick()
+        },
         modifier = modifier
             .fillMaxWidth()
             .height(40.dp),
@@ -232,7 +282,7 @@ private fun ErrorMessage(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    imageVector = Icons.Default.Warning,
+                    imageVector = Icons.Outlined.Warning,
                     contentDescription = null,
                     modifier = Modifier.size(15.dp)
                 )

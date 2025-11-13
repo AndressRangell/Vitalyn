@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andres.rangel.vitalyn.authentication.data.repository.LoginRepositoryImpl
 import com.andres.rangel.vitalyn.authentication.domain.usecase.LoginUseCase
+import com.andres.rangel.vitalyn.authentication.ui.state.LoginEvent
 import com.andres.rangel.vitalyn.authentication.ui.state.LoginFormState
-import com.andres.rangel.vitalyn.authentication.ui.state.LoginUiState
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -18,15 +20,12 @@ class LoginViewModel(
 
     private val loginUseCase: LoginUseCase = LoginUseCase(LoginRepositoryImpl())
 
-    private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
-    val loginUiState: StateFlow<LoginUiState> = _loginUiState.asStateFlow()
+    // UI events
+    private val _loginEvent = Channel<LoginEvent>()
+    val loginEvent = _loginEvent.receiveAsFlow()
 
     private val _loginFormState = MutableStateFlow(LoginFormState())
     val loginFormState: StateFlow<LoginFormState> = _loginFormState.asStateFlow()
-
-    fun togglePasswordVisibility() {
-        _loginFormState.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
-    }
 
     fun onEmailChange(email: String) {
         _loginFormState.update {
@@ -47,22 +46,24 @@ class LoginViewModel(
     fun login() {
         viewModelScope.launch {
             val state = _loginFormState.value
-            _loginUiState.value = LoginUiState.Loading
+            _loginFormState.update { it.copy(isLoading = true) }
 
             loginUseCase(
                 email = state.email.trim(),
                 password = state.password
             ).fold(
                 onSuccess = { user ->
-                    _loginUiState.value = LoginUiState.Success
+                    _loginFormState.update { it.copy(isLoading = false) }
+                    _loginEvent.send(LoginEvent.LoggedInSuccessfully)
                 },
                 onFailure = { exception ->
                     _loginFormState.update {
                         it.copy(
-                            errorMessage = (exception.cause?.message ?: exception.message) ?: "Unknown error"
+                            isLoading = false,
+                            errorMessage = (exception.cause?.message ?: exception.message)
+                                ?: "Unknown error"
                         )
                     }
-                    _loginUiState.value = LoginUiState.Idle
                 }
             )
         }
