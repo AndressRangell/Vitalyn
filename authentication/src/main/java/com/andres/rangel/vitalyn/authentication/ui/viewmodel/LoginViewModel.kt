@@ -2,6 +2,7 @@ package com.andres.rangel.vitalyn.authentication.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andres.rangel.vitalyn.authentication.data.remote.datasource.LoginRemoteDataSourceImpl
 import com.andres.rangel.vitalyn.authentication.data.repository.LoginRepositoryImpl
 import com.andres.rangel.vitalyn.authentication.domain.usecase.LoginUseCase
 import com.andres.rangel.vitalyn.authentication.ui.state.LoginEvent
@@ -14,11 +15,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LoginViewModel(
+class LoginViewModel : ViewModel() {
 
-) : ViewModel() {
-
-    private val loginUseCase: LoginUseCase = LoginUseCase(LoginRepositoryImpl())
+    private val loginUseCase: LoginUseCase = LoginUseCase()
 
     // UI events
     private val _loginEvent = Channel<LoginEvent>()
@@ -53,7 +52,7 @@ class LoginViewModel(
                 password = state.password
             ).fold(
                 onSuccess = { user ->
-                    _loginFormState.update { it.copy(isLoading = false) }
+                    clearLoginFormState()
                     _loginEvent.send(LoginEvent.LoggedInSuccessfully)
                 },
                 onFailure = { exception ->
@@ -67,5 +66,9 @@ class LoginViewModel(
                 }
             )
         }
+    }
+
+    private fun clearLoginFormState() {
+        _loginFormState.value = LoginFormState()
     }
 }

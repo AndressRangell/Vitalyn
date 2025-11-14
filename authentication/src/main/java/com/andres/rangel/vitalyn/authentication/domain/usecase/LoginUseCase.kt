@@ -1,5 +1,7 @@
 package com.andres.rangel.vitalyn.authentication.domain.usecase
 
+import com.andres.rangel.vitalyn.authentication.data.remote.datasource.LoginRemoteDataSourceImpl
+import com.andres.rangel.vitalyn.authentication.data.repository.LoginRepositoryImpl
 import com.andres.rangel.vitalyn.authentication.domain.model.User
 import com.andres.rangel.vitalyn.authentication.domain.repository.ILoginRepository
 import com.andres.rangel.vitalyn.authentication.domain.util.validation.EmailValidation
@@ -7,9 +9,9 @@ import com.andres.rangel.vitalyn.authentication.domain.util.validation.PasswordV
 import com.andres.rangel.vitalyn.authentication.domain.util.validation.ValidationResult
 import com.andres.rangel.vitalyn.authentication.domain.util.enum.UserState
 
-class LoginUseCase(
-    private val loginRepository: ILoginRepository
-) {
+class LoginUseCase {
+    private val loginRepository: ILoginRepository = LoginRepositoryImpl(LoginRemoteDataSourceImpl())
+
     suspend operator fun invoke(email: String, password: String): Result<User> {
         val emailValidation = EmailValidation.isValidEmail(email)
         if (emailValidation is ValidationResult.Invalid) {
