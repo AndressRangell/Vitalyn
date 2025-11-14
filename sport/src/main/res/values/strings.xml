@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="top_app_bar_sports_title">Tu Actividad</string>
+    <string name="top_app_bar_sports_error_streak">--</string>
+    <string name="routine_list_status_routine">En progreso</string>
+    <string name="routine_list_status_completed">Completada</string>
+    <string name="routine_list_image_description">Cycling Image</string>
+    <string name="top_app_bar_sports_streak_icon">Streak icon</string>
+    <string name="training_calendar_header_previous_icon">Previous icon</string>
+    <string name="training_calendar_header_next_icon">Next icon</string>
+    <string name="routine_list_mins">mins</string>
+    <string name="routine_list_start">INICIAR</string>
+    <string name="routine_list_add_new_routine">Añadir nueva rutina</string>
+
+    <string-array name="week_days_short">
+        <item>L</item>
+        <item>M</item>
+        <item>M</item>
+        <item>J</item>
+        <item>V</item>
+        <item>S</item>
+        <item>D</item>
+    </string-array>
+</resources>

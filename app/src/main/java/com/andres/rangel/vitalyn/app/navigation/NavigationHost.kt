@@ -1,11 +1,8 @@
 package com.andres.rangel.vitalyn.app.navigation
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -42,10 +39,7 @@ fun NavigationHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Login.route,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = innerPadding.calculateTopPadding())
+            startDestination = Screen.Sports.route
         ) {
             composable(route = Screen.Login.route) {
                 LoginScreen(navigateToSports = { navController.navigate(Screen.Sports.route) })
