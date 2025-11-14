@@ -345,7 +345,8 @@ fun RoutinesList(routines: List<Routine>) {
                             modifier = Modifier.fillMaxSize()
                         ) {
                             Box(
-                                contentAlignment = Alignment.Center
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.padding(end = 10.dp)
                             ) {
                                 val backgroundProgress = MaterialTheme.colorScheme.onSurfaceVariant
                                 val indicateProgress = MaterialTheme.colorScheme.surfaceVariant
