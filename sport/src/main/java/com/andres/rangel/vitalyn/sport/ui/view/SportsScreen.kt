@@ -30,9 +30,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
@@ -41,7 +45,6 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -49,6 +52,8 @@ import com.andres.rangel.vitalyn.core.util.DataState
 import com.andres.rangel.vitalyn.sport.R
 import com.andres.rangel.vitalyn.sport.domain.model.Routine
 import com.andres.rangel.vitalyn.sport.ui.viewmodel.SportsViewModel
+import com.andres.rangel.vitalyn.sport.utils.CalendarUtils
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -115,7 +120,7 @@ private fun TopAppBarSports(streak: Int) {
                     )
                     Icon(
                         painterResource(R.drawable.streak),
-                        contentDescription = "Streak icon",
+                        contentDescription = stringResource(R.string.top_app_bar_sports_streak_icon),
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(25.dp)
@@ -133,11 +138,48 @@ private fun TopAppBarSports(streak: Int) {
 @Composable
 fun TrainingCalendarHeader() {
     val weekDaysShort = stringArrayResource(R.array.week_days_short)
-    Text(
-        "Noviembre 2025",
-        style = MaterialTheme.typography.titleMedium,
-        modifier = Modifier.padding(horizontal = 25.dp)
-    )
+
+    var weekOffset by remember { mutableStateOf(0) }
+    val baseDate = LocalDate.now().plusWeeks(weekOffset.toLong())
+    val week = remember(baseDate) {
+        CalendarUtils.getWeekMondayToSunday(baseDate)
+    }
+
+    val calendarTitle = CalendarUtils.getCalendarTitle(week)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 25.dp)
+    ) {
+        Text(
+            calendarTitle,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.weight(1f)
+        )
+        IconButton(
+            onClick = { weekOffset-- },
+            modifier = Modifier
+                .width(30.dp)
+                .height(20.dp)
+                .padding(end = 10.dp)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.previous),
+                contentDescription = stringResource(R.string.training_calendar_header_icon_previous)
+            )
+        }
+        IconButton(
+            onClick = { weekOffset++ },
+            modifier = Modifier.size(20.dp)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.previous),
+                contentDescription = stringResource(R.string.training_calendar_header_icon_next),
+                modifier = Modifier.scale(scaleX = -1f, scaleY = 1f)
+            )
+        }
+    }
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -164,29 +206,32 @@ fun TrainingCalendarHeader() {
                 vertical = 5.dp
             )
     ) {
-        for (day in 0..6) {
+        week.forEach { dayItem ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.height(40.dp)
             ) {
+                val textColor =
+                    if (dayItem.isToday) MaterialTheme.colorScheme.background
+                    else MaterialTheme.colorScheme.primary
+
+                val backgroundColor =
+                    if (dayItem.isToday) MaterialTheme.colorScheme.primaryContainer
+                    else MaterialTheme.colorScheme.background
+
+                val weight =
+                    if (dayItem.isToday) FontWeight.Bold
+                    else FontWeight.Normal
+
                 Text(
-                    text = numberDays[day],
+                    text = dayItem.day.toString(),
                     style = MaterialTheme.typography.titleMedium,
-                    color = if (numberDays[day] == "10")
-                        MaterialTheme.colorScheme.background
-                    else
-                        MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold,
+                    color = textColor,
+                    fontWeight = weight,
                     modifier = Modifier
                         .size(32.dp)
-                        .background(
-                            color = if (numberDays[day] == "10")
-                                MaterialTheme.colorScheme.primaryContainer
-                            else
-                                MaterialTheme.colorScheme.background,
-                            shape = CircleShape
-                        )
+                        .background(backgroundColor, CircleShape)
                         .padding(
                             top = 3.dp,
                             start = 7.dp
@@ -227,11 +272,12 @@ fun RoutinesList(routines: List<Routine>) {
                             )
                             .weight(0.6f)
                     ) {
+                        val textStatus =
+                            if (routine.progress != 100) stringResource(R.string.routine_list_status_routine)
+                            else stringResource(R.string.routine_list_status_completed)
+
                         Text(
-                            text = if (routine.progress != 100)
-                                stringResource(R.string.routine_list_status_routine)
-                            else
-                                stringResource(R.string.routine_list_status_completed),
+                            text = textStatus,
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.padding(bottom = 20.dp)
@@ -255,7 +301,7 @@ fun RoutinesList(routines: List<Routine>) {
                                 modifier = Modifier.padding(end = 15.dp)
                             )
                             Text(
-                                text = routine.duration.toString() + "mins",
+                                text = routine.duration.toString() + stringResource(R.string.routine_list_mins),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
@@ -264,14 +310,14 @@ fun RoutinesList(routines: List<Routine>) {
                             onClick = {},
                             shape = RoundedCornerShape(30.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.onPrimary
+                                containerColor = MaterialTheme.colorScheme.secondary
                             ),
                             modifier = Modifier
                                 .width(150.dp)
-                                .height(100.dp)
+                                .height(60.dp)
                         ) {
                             Text(
-                                "INICIAR",
+                                stringResource(R.string.routine_list_start),
                                 style = MaterialTheme.typography.titleLarge,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
@@ -338,17 +384,25 @@ fun RoutinesList(routines: List<Routine>) {
                 }
             }
         }
-    }
-}
-
-val numberDays = listOf(
-    "10", "11", "12", "13", "14", "15", "16"
-)
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewSports() {
-    MaterialTheme {
-        TopAppBarSports(10)
+        Button(
+            onClick = {},
+            shape = RoundedCornerShape(30.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            ),
+            modifier = Modifier
+                .height(60.dp)
+                .padding(
+                    horizontal = 20.dp,
+                    vertical = 10.dp
+                )
+        ) {
+            Text(
+                stringResource(R.string.routine_list_add_new_routine),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }

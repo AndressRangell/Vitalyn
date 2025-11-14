@@ -32,7 +32,7 @@ class SportsLocalDataSource @Inject constructor() {
                     )
                 ),
                 duration = 10,
-                progress = 22,
+                progress = 72,
                 image = R.drawable.cycling
             )
         )
