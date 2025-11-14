@@ -166,7 +166,7 @@ fun TrainingCalendarHeader() {
         ) {
             Icon(
                 painter = painterResource(R.drawable.previous),
-                contentDescription = stringResource(R.string.training_calendar_header_icon_previous)
+                contentDescription = stringResource(R.string.training_calendar_header_previous_icon)
             )
         }
         IconButton(
@@ -175,7 +175,7 @@ fun TrainingCalendarHeader() {
         ) {
             Icon(
                 painter = painterResource(R.drawable.previous),
-                contentDescription = stringResource(R.string.training_calendar_header_icon_next),
+                contentDescription = stringResource(R.string.training_calendar_header_next_icon),
                 modifier = Modifier.scale(scaleX = -1f, scaleY = 1f)
             )
         }

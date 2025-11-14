@@ -6,8 +6,8 @@
     <string name="routine_list_status_completed">Completada</string>
     <string name="routine_list_image_description">Cycling Image</string>
     <string name="top_app_bar_sports_streak_icon">Streak icon</string>
-    <string name="training_calendar_header_icon_previous">Icon previous</string>
-    <string name="training_calendar_header_icon_next">Icon next</string>
+    <string name="training_calendar_header_previous_icon">Previous icon</string>
+    <string name="training_calendar_header_next_icon">Next icon</string>
     <string name="routine_list_mins">mins</string>
     <string name="routine_list_start">INICIAR</string>
     <string name="routine_list_add_new_routine">Añadir nueva rutina</string>
