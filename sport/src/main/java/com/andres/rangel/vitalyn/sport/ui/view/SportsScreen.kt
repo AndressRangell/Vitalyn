@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,15 +32,19 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
@@ -48,12 +54,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.andres.rangel.vitalyn.core.ui.theme.GrayLight
+import com.andres.rangel.vitalyn.core.ui.theme.GreenCard
+import com.andres.rangel.vitalyn.core.ui.theme.PinkCard
+import com.andres.rangel.vitalyn.core.ui.theme.PurpleCard
+import com.andres.rangel.vitalyn.core.ui.theme.Transparent
 import com.andres.rangel.vitalyn.core.util.DataState
 import com.andres.rangel.vitalyn.sport.R
 import com.andres.rangel.vitalyn.sport.domain.model.Routine
+import com.andres.rangel.vitalyn.sport.domain.model.WeeklyCalories
 import com.andres.rangel.vitalyn.sport.ui.viewmodel.SportsViewModel
 import com.andres.rangel.vitalyn.sport.utils.CalendarUtils
 import java.time.LocalDate
+import kotlin.math.cos
+import kotlin.math.sin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,6 +76,7 @@ fun SportsScreen(
 ) {
     val streakState by viewModel.streak.collectAsState()
     val routinesState by viewModel.routines.collectAsState()
+    val weeklyCaloriesState by viewModel.weeklyCalories.collectAsState()
 
     val streak = when (streakState) {
         is DataState.Success -> (streakState as DataState.Success<Int>).data
@@ -72,6 +87,12 @@ fun SportsScreen(
         is DataState.Success -> (routinesState as DataState.Success<List<Routine>>).data
         else -> emptyList()
     }
+
+    val weeklyCalories = when (weeklyCaloriesState) {
+        is DataState.Success -> (weeklyCaloriesState as DataState.Success<List<WeeklyCalories>>).data
+        else -> emptyList()
+    }
+
 
     Scaffold(
         topBar = {
@@ -86,6 +107,8 @@ fun SportsScreen(
         ) {
             TrainingCalendarHeader()
             RoutinesList(routines)
+            CustomDivider()
+            WeeklyStatistics(weeklyCalories)
         }
     }
 }
@@ -139,7 +162,7 @@ private fun TopAppBarSports(streak: Int) {
 fun TrainingCalendarHeader() {
     val weekDaysShort = stringArrayResource(R.array.week_days_short)
 
-    var weekOffset by remember { mutableStateOf(0) }
+    var weekOffset by remember { mutableIntStateOf(0) }
     val baseDate = LocalDate.now().plusWeeks(weekOffset.toLong())
     val week = remember(baseDate) {
         CalendarUtils.getWeekMondayToSunday(baseDate)
@@ -150,7 +173,7 @@ fun TrainingCalendarHeader() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 25.dp)
+            .padding(horizontal = 20.dp)
     ) {
         Text(
             calendarTitle,
@@ -245,13 +268,16 @@ fun TrainingCalendarHeader() {
 @Composable
 fun RoutinesList(routines: List<Routine>) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 350.dp)
+            .padding(bottom = 30.dp)
     ) {
         routines.forEach { routine ->
             Card(
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    containerColor = MaterialTheme.colorScheme.onSurface
                 ),
                 elevation = CardDefaults.cardElevation(10.dp),
                 modifier = Modifier
@@ -345,8 +371,7 @@ fun RoutinesList(routines: List<Routine>) {
                             modifier = Modifier.fillMaxSize()
                         ) {
                             Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier.padding(end = 10.dp)
+                                contentAlignment = Alignment.Center
                             ) {
                                 val backgroundProgress = MaterialTheme.colorScheme.onSurfaceVariant
                                 val indicateProgress = MaterialTheme.colorScheme.surfaceVariant
@@ -369,7 +394,7 @@ fun RoutinesList(routines: List<Routine>) {
                                     )
                                 }
                                 Text(
-                                    text = routine.progress.toString(),
+                                    text = "${routine.progress}%",
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onPrimary,
@@ -404,6 +429,157 @@ fun RoutinesList(routines: List<Routine>) {
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
             )
+        }
+    }
+}
+
+@Composable
+fun CustomDivider() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        Transparent,
+                        GrayLight,
+                        Transparent
+                    )
+                )
+            )
+            .padding(vertical = 15.dp)
+    )
+}
+
+@Composable
+fun WeeklyStatistics(weeklyCalories: List<WeeklyCalories>) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 20.dp,
+                vertical = 20.dp
+            )
+    ) {
+        Text(
+            stringResource(R.string.weekly_statistics_title),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 10.dp)
+        )
+        Card(
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            ),
+            elevation = CardDefaults.cardElevation(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(180.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        vertical = 10.dp,
+                        horizontal = 20.dp
+                    )
+            ) {
+                val colors = listOf(GreenCard, PinkCard, PurpleCard)
+                Column(
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    weeklyCalories.forEachIndexed { index, weeklyCalories ->
+                        Column(
+                            modifier = Modifier.padding(bottom = 15.dp)
+                        ) {
+                            Row {
+                                Box(
+                                    modifier = Modifier
+                                        .size(18.dp)
+                                        .padding(3.dp)
+                                        .background(
+                                            color = colors[index],
+                                            shape = CircleShape
+                                        )
+                                )
+                                Text(
+                                    text = weeklyCalories.calories.toString(),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(start = 10.dp)
+                                )
+                            }
+                            Text(
+                                text = weeklyCalories.category,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.padding(start = 30.dp)
+                            )
+                        }
+                    }
+                }
+                val total = weeklyCalories.sumOf { it.calories }
+                val percentages = if (total > 0) {
+                    weeklyCalories.map { (it.calories.toFloat() / total) * 100f }
+                } else {
+                    List(weeklyCalories.size) { 100f / weeklyCalories.size }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(1f)
+                        .padding(
+                            start = 35.dp,
+                            top = 30.dp
+                        )
+                ) {
+                    if (total != 0) {
+                        Canvas(
+                            modifier = Modifier.size(90.dp)
+                        ) {
+                            val strokeWidth = 35.dp.toPx()
+                            val radius = size.minDimension / 2
+                            val sweepAngles = percentages.map { it * 360f / 100f }.reversed()
+                            var startAngle = -90f
+
+                            sweepAngles.forEachIndexed { index, sweep ->
+                                drawArc(
+                                    color = colors.reversed()[index],
+                                    startAngle = startAngle,
+                                    sweepAngle = sweep,
+                                    useCenter = false,
+                                    style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                                )
+
+                                val middleAngle = startAngle + sweep / 2
+                                val rad = Math.toRadians(middleAngle.toDouble())
+
+                                val textRadius = radius + 90f
+                                val x = center.x + cos(rad) * textRadius
+                                val y = center.y + sin(rad) * textRadius
+
+                                drawIntoCanvas { canvas ->
+                                    val paint = Paint().asFrameworkPaint().apply {
+                                        isAntiAlias = true
+                                        textSize = 40f
+                                        textAlign = android.graphics.Paint.Align.CENTER
+                                        color = android.graphics.Color.WHITE
+                                    }
+                                    canvas.nativeCanvas.drawText(
+                                        "${percentages.reversed()[index].toInt()}%",
+                                        x.toFloat(),
+                                        y.toFloat(),
+                                        paint
+                                    )
+                                }
+                                startAngle += sweep
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
