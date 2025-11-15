@@ -6,6 +6,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -32,36 +33,37 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.andres.rangel.vitalyn.R
 import com.andres.rangel.vitalyn.app.navigation.NavigationItem
 import com.andres.rangel.vitalyn.app.navigation.Screen
+import com.andres.rangel.vitalyn.app.util.AppConstants
 import com.andres.rangel.vitalyn.core.ui.theme.GrayLight
 import com.andres.rangel.vitalyn.core.ui.theme.GreenPastel
-import com.andres.rangel.vitalyn.app.util.AppConstants
 
 @Composable
 fun BottomNavigationBar(
-    navController: NavHostController,
-    horizontalInset: Dp = 20.dp,
-    verticalInset: Dp = 25.dp,
-    cornerRadius: Dp = 35.dp
+    navController: NavHostController
 ) {
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = horizontalInset, vertical = verticalInset),
+            .padding(
+                horizontal = 20.dp,
+                vertical = 25.dp
+            ),
         contentAlignment = Alignment.BottomCenter
     ) {
         Surface(
-            shape = RoundedCornerShape(cornerRadius),
-            tonalElevation = 8.dp,
-            shadowElevation = 8.dp,
+            shape = RoundedCornerShape(35.dp),
+            border = BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+            ),
             color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier
                 .fillMaxWidth()

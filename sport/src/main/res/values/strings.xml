@@ -11,6 +11,7 @@
     <string name="routine_list_mins">mins</string>
     <string name="routine_list_start">INICIAR</string>
     <string name="routine_list_add_new_routine">Añadir nueva rutina</string>
+    <string name="weekly_statistics_title">Estadísticas de la semana</string>
 
     <string-array name="week_days_short">
         <item>L</item>

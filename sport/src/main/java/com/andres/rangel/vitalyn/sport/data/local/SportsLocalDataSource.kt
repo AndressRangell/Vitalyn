@@ -6,6 +6,7 @@ import com.andres.rangel.vitalyn.sport.R
 import com.andres.rangel.vitalyn.sport.domain.model.Exercise
 import com.andres.rangel.vitalyn.sport.domain.model.Routine
 import com.andres.rangel.vitalyn.sport.domain.model.Streak
+import com.andres.rangel.vitalyn.sport.domain.model.WeeklyCalories
 import javax.inject.Inject
 
 class SportsLocalDataSource @Inject constructor() {
@@ -34,6 +35,23 @@ class SportsLocalDataSource @Inject constructor() {
                 duration = 10,
                 progress = 72,
                 image = R.drawable.cycling
+            )
+        )
+    }
+
+    fun getWeeklyCalories(): List<WeeklyCalories> {
+        return listOf(
+            WeeklyCalories(
+                calories = 1200,
+                category = "Tren superior"
+            ),
+            WeeklyCalories(
+                calories = 328,
+                category = "Tren inferior"
+            ),
+            WeeklyCalories(
+                calories = 872,
+                category = "Cardio"
             )
         )
     }
