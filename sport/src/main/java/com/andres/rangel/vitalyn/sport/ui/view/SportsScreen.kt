@@ -532,7 +532,7 @@ fun WeeklyStatistics(weeklyCalories: List<WeeklyCalories>) {
                         .weight(1f)
                         .padding(
                             start = 35.dp,
-                            top = 30.dp
+                            top = 35.dp
                         )
                 ) {
                     if (total != 0) {
@@ -556,7 +556,7 @@ fun WeeklyStatistics(weeklyCalories: List<WeeklyCalories>) {
                                 val middleAngle = startAngle + sweep / 2
                                 val rad = Math.toRadians(middleAngle.toDouble())
 
-                                val textRadius = radius + 90f
+                                val textRadius = radius + 80f
                                 val x = center.x + cos(rad) * textRadius
                                 val y = center.y + sin(rad) * textRadius
 
