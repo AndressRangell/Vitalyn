@@ -45,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,7 +59,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andres.rangel.vitalyn.authentication.R
 import com.andres.rangel.vitalyn.authentication.ui.state.LoginEvent
 import com.andres.rangel.vitalyn.authentication.ui.viewmodel.LoginViewModel
+import com.andres.rangel.vitalyn.core.ui.theme.BlueFacebook
 import com.andres.rangel.vitalyn.core.ui.theme.VitalynTheme
+import com.andres.rangel.vitalyn.core.ui.theme.White
 
 @Composable
 fun LoginScreen(
@@ -109,8 +112,7 @@ private fun LoginHeader() {
         )
         Text(
             text = "¡Bienvenido!",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }
@@ -165,6 +167,8 @@ private fun LoginForm(
                 text = "Iniciar Sesión",
                 enabled = isFormValid
             )
+            Spacer(modifier = Modifier.height(10.dp))
+            SocialLoginSection({}, {})
             Spacer(modifier = Modifier.height(10.dp))
             ErrorMessage(loginFormState.errorMessage)
             Spacer(modifier = Modifier.height(10.dp))
@@ -229,7 +233,8 @@ private fun LoginButton(
     modifier: Modifier = Modifier,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.4f)
     ),
     enabled: Boolean = true
 ) {
@@ -323,6 +328,69 @@ private fun LoginSecondaryActions(
                 text = "Crear Cuenta",
                 style = MaterialTheme.typography.titleMedium
             )
+        }
+    }
+}
+
+@Composable
+fun SocialLoginSection(
+    onGoogleClick: () -> Unit = {},
+    onFacebookClick: () -> Unit = {}
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text("ó")
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = onGoogleClick,
+            shape = MaterialTheme.shapes.medium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(35.dp)
+        ) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_google),
+                    contentDescription = "Google",
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .size(20.dp),
+                    tint = Color.Unspecified
+                )
+                Text("Continuar con Google")
+            }
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+        Button(
+            onClick = onFacebookClick,
+            shape = MaterialTheme.shapes.medium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(35.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = BlueFacebook,
+                contentColor = White
+            )
+        ) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_facebook),
+                    contentDescription = "Google",
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .size(20.dp),
+                    tint = Color.Unspecified
+                )
+                Text("Continuar con Facebook")
+            }
         }
     }
 }
