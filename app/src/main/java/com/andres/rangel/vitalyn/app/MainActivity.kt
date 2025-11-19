@@ -9,7 +9,9 @@ import com.andres.rangel.vitalyn.app.navigation.NavigationHost
 import com.andres.rangel.vitalyn.core.ui.theme.VitalynTheme
 import com.andres.rangel.vitalyn.app.ui.splash.SplashAnimationType
 import com.andres.rangel.vitalyn.app.ui.splash.setAnimation
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()

@@ -3,7 +3,11 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
+
+hilt.enableAggregatingTask = false
 
 android {
     namespace = "com.andres.rangel.vitalyn"
@@ -31,6 +35,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -68,6 +74,13 @@ dependencies {
 
     // Splash Screen
     implementation(libs.androidx.splash.screen)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+    coreLibraryDesugaring(libs.desugar.jdk)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
