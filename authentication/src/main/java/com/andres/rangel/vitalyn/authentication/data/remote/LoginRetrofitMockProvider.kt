@@ -5,15 +5,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object LoginRetrofitMockProvider {
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(LoginMockInterceptor())
-        .build()
+    val retrofit: Retrofit? by lazy {
+        runCatching {
+            val client = OkHttpClient.Builder()
+                .addInterceptor(LoginMockInterceptor())
+                .build()
 
-    val api: ILoginApiService =
-        Retrofit.Builder()
-            .baseUrl("http://mockapi.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-            .create(ILoginApiService::class.java)
+            Retrofit.Builder()
+                .baseUrl("http://mockapi.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+        }.getOrNull()
+    }
 }
