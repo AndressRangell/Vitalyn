@@ -1,15 +1,15 @@
 package com.andres.rangel.vitalyn.authentication.data.repository
 
 import com.andres.rangel.vitalyn.authentication.data.mapper.toDomain
-import com.andres.rangel.vitalyn.authentication.data.remote.datasource.ILoginRemoteDataSource
+import com.andres.rangel.vitalyn.authentication.data.remote.datasource.LoginRemoteDataSource
 import com.andres.rangel.vitalyn.authentication.data.remote.dto.LoginRequestDto
 import com.andres.rangel.vitalyn.authentication.domain.model.User
-import com.andres.rangel.vitalyn.authentication.domain.repository.ILoginRepository
+import com.andres.rangel.vitalyn.authentication.domain.repository.LoginRepository
 import retrofit2.HttpException
 
 class LoginRepositoryImpl(
-    private val remoteDataSource: ILoginRemoteDataSource
-) : ILoginRepository {
+    private val remoteDataSource: LoginRemoteDataSource
+) : LoginRepository {
 
     override suspend fun login(email: String, password: String): Result<User> {
         return try {
