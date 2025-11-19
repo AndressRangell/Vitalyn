@@ -1,12 +1,9 @@
 package com.andres.rangel.vitalyn.sport.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.andres.rangel.vitalyn.sport.domain.model.CalendarDay
 import java.time.LocalDate
 
 object CalendarUtils {
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getWeekMondayToSunday(date: LocalDate): List<CalendarDay> {
         val dayOfWeek = date.dayOfWeek.value
 
