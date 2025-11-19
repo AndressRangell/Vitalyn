@@ -22,3 +22,5 @@ val GreenCard = Color(0xFFE6F47E)
 val PinkCard = Color(0xFFF0C9FF)
 val PurpleCard = Color(0xFFB2A1FE)
 val Transparent = Color(0x00000000)
+
+val BlueFacebook = Color(0xFF0866FF)
