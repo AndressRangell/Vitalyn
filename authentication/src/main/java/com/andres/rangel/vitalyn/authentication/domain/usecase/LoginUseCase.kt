@@ -4,10 +4,10 @@ import com.andres.rangel.vitalyn.authentication.data.remote.datasource.LoginRemo
 import com.andres.rangel.vitalyn.authentication.data.repository.LoginRepositoryImpl
 import com.andres.rangel.vitalyn.authentication.domain.model.User
 import com.andres.rangel.vitalyn.authentication.domain.repository.LoginRepository
+import com.andres.rangel.vitalyn.authentication.domain.util.enum.UserState
 import com.andres.rangel.vitalyn.authentication.domain.util.validation.EmailValidation
 import com.andres.rangel.vitalyn.authentication.domain.util.validation.PasswordValidation
 import com.andres.rangel.vitalyn.authentication.domain.util.validation.ValidationResult
-import com.andres.rangel.vitalyn.authentication.domain.util.enum.UserState
 
 class LoginUseCase {
     private val loginRepository: LoginRepository = LoginRepositoryImpl(LoginRemoteDataSourceImpl())

@@ -2,8 +2,6 @@ package com.andres.rangel.vitalyn.authentication.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andres.rangel.vitalyn.authentication.data.remote.datasource.LoginRemoteDataSourceImpl
-import com.andres.rangel.vitalyn.authentication.data.repository.LoginRepositoryImpl
 import com.andres.rangel.vitalyn.authentication.domain.usecase.LoginUseCase
 import com.andres.rangel.vitalyn.authentication.ui.state.LoginEvent
 import com.andres.rangel.vitalyn.authentication.ui.state.LoginFormState
