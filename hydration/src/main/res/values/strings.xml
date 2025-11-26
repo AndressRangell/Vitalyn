@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="top_app_bar_hydration_title">Tu Hidratación</string>
+    <string name="top_app_bar_hydration_streak_icon">Racha</string>
+
+    <string name="daily_goal_title">Meta diaria</string>
+    <string name="daily_goal_ml">ml</string>
+
+    <string name="hydration_log_title">Registro</string>
+    <string name="hydration_log_type">Registro de</string>
+    <string name="hydration_log_type_water_glass">Vaso de Agua</string>
+    <string name="hydration_log_type_water_bottle">Botella de Agua</string>
+    <string name="hydration_log_type_coffee">Café</string>
+    <string name="hydration_log_type_tea">Té</string>
+    <string name="hydration_log_type_juice">Jugo</string>
+    <string name="hydration_log_type_undefined">Indefinido</string>
+
+    <string name="weekly_progress_title">Histórico</string>
+    <string name="weekly_progress_initial_letter_day_monday">L</string>
+    <string name="weekly_progress_initial_letter_day_tuesday">M</string>
+    <string name="weekly_progress_initial_letter_day_wednesday">M</string>
+    <string name="weekly_progress_initial_letter_day_thursday">J</string>
+    <string name="weekly_progress_initial_letter_day_friday">V</string>
+    <string name="weekly_progress_initial_letter_day_saturday">S</string>
+    <string name="weekly_progress_initial_letter_day_sunday">D</string>
+    <string name="weekly_progress_initial_letter_day_undefined">-</string>
+</resources>
